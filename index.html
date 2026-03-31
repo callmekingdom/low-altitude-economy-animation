@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenMAIC - 多智能体互动课堂</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="assets/logo.svg" alt="OpenMAIC Logo" class="logo-img">
+                <span class="logo-text">青藜伴学</span>
+            </div>
+            <nav class="nav">
+                <a href="#courses" class="nav-link">课程</a>
+                <a href="#about" class="nav-link">关于</a>
+                <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="nav-link github-link">
+                    <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#courses" class="mobile-nav-link">课程</a>
+        <a href="#about" class="mobile-nav-link">关于</a>
+        <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="mobile-nav-link">GitHub</a>
+    </div>
+
+    <!-- 主视觉区 -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Generative Learning in<br>Multi-Agent Interactive Classroom</h1>
+            <p class="hero-subtitle">基于多智能体的生成式互动课堂平台</p>
+            <p class="hero-greeting">嗨，同学 👋</p>
+            <div class="hero-cta">
+                <a href="#courses" class="btn btn-primary">开始学习</a>
+                <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="btn btn-secondary">查看源码</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <span class="card-tag">AI</span>
+                <span class="card-text">智能辅导</span>
+            </div>
+            <div class="floating-card card-2">
+                <span class="card-tag">互动</span>
+                <span class="card-text">实时课堂</span>
+            </div>
+            <div class="floating-card card-3">
+                <span class="card-tag">生成式</span>
+                <span class="card-text">个性化学习</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 课程展示区 -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">精品课程</h2>
+                <p class="section-subtitle">探索多领域知识，开启智慧学习之旅</p>
+            </div>
+            
+            <div class="course-grid">
+                <!-- 课程卡片 1 -->
+                <div class="course-card" data-course="openclaw">
+                    <div class="course-image">
+                        <div class="course-badge">编程</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">OpenClaw 介绍与部署</h3>
+                        <p class="course-desc">甲木老师带你入门 OpenClaw</p>
+                        <div class="course-meta">
+                            <span class="course-tag">趣味</span>
+                            <span class="course-duration">15 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 2 -->
+                <div class="course-card" data-course="tax">
+                    <div class="course-image">
+                        <div class="course-badge">财务</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">个人所得税汇算清缴</h3>
+                        <p class="course-desc">2026年个税汇算清缴实操指南</p>
+                        <div class="course-meta">
+                            <span class="course-tag">实用</span>
+                            <span class="course-duration">20 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 3 -->
+                <div class="course-card" data-course="flowers">
+                    <div class="course-image">
+                        <div class="course-badge">科学</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">花朵分类</h3>
+                        <p class="course-desc">用 AI 认识植物世界</p>
+                        <div class="course-meta">
+                            <span class="course-tag">科学</span>
+                            <span class="course-duration">12 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 4 -->
+                <div class="course-card" data-course="fraction">
+                    <div class="course-image">
+                        <div class="course-badge">数学</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">分数的概念</h3>
+                        <p class="course-desc">三年级数学，含披萨模拟器</p>
+                        <div class="course-meta">
+                            <span class="course-tag">数学</span>
+                            <span class="course-duration">18 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 5 -->
+                <div class="course-card" data-course="taylor">
+                    <div class="course-image">
+                        <div class="course-badge">数学</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">泰勒公式讲解</h3>
+                        <p class="course-desc">期末复习必备</p>
+                        <div class="course-meta">
+                            <span class="course-tag">数学</span>
+                            <span class="course-duration">25 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 6 -->
+                <div class="course-card" data-course="rocket">
+                    <div class="course-image">
+                        <div class="course-badge">科学</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">牛顿第三定律与火箭方程</h3>
+                        <p class="course-desc">流浪地球情境教学</p>
+                        <div class="course-meta">
+                            <span class="course-tag">科学</span>
+                            <span class="course-duration">22 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 7 -->
+                <div class="course-card" data-course="avalon">
+                    <div class="course-image">
+                        <div class="course-badge">桌游</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">阿瓦隆桌游入门</h3>
+                        <p class="course-desc">快速上手经典桌游</p>
+                        <div class="course-meta">
+                            <span class="course-tag">趣味</span>
+                            <span class="course-duration">10 分钟</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程卡片 8 -->
+                <div class="course-card" data-course="ai-education">
+                    <div class="course-image">
+                        <div class="course-badge">前沿</div>
+                        <div class="course-overlay">
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">AI 教育领域最新进展</h3>
+                        <p class="course-desc">前沿 AI 教育技术解读</p>
+                        <div class="course-meta">
+                            <span class="course-tag">科技</span>
+                            <span class="course-duration">30 分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 视频播放器模态框 -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="video-close" id="videoClose">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+            <div class="video-container">
+                <video id="mainVideo" class="video-player">
+                    <source src="" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+                <div class="video-controls">
+                    <button class="control-btn play-pause" id="playPauseBtn">
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <div class="progress-handle" id="progressHandle"></div>
+                        </div>
+                    </div>
+                    <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                    <button class="control-btn fullscreen" id="fullscreenBtn">
+                        <svg class="fullscreen-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                        <svg class="exit-fullscreen-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 关于区域 -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="section-title">关于 OpenMAIC</h2>
+                <p class="about-text">
+                    OpenMAIC (Open Multi-Agent Interactive Classroom) 是一个开源的多智能体互动课堂平台。
+                    我们利用先进的生成式 AI 技术，打造个性化、互动式的学习体验，让每个学生都能获得专属的智能辅导。
+                </p>
+                <div class="about-features">
+                    <div class="feature">
+                        <div class="feature-icon">🤖</div>
+                        <h4>多智能体协作</h4>
+                        <p>多个 AI 智能体协同工作，提供全方位学习支持</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h4>个性化学习</h4>
+                        <p>根据学习进度和风格，生成定制化教学内容</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💬</div>
+                        <h4>实时互动</h4>
+                        <p>与 AI 导师实时对话，即时解答疑惑</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="assets/logo.svg" alt="OpenMAIC" class="footer-logo">
+                    <span>青藜伴学 - 多智能体互动课堂</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank">GitHub</a>
+                    <a href="#courses">课程</a>
+                    <a href="#about">关于</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OpenMAIC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
