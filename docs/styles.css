@@ -921,3 +921,552 @@ body {
 .course-card:nth-child(6) { animation-delay: 0.6s; }
 .course-card:nth-child(7) { animation-delay: 0.7s; }
 .course-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* ==================== 社区链接栏 ==================== */
+.community-bar {
+    background: linear-gradient(90deg, #1e3a5f 0%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+}
+
+.community-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.community-links {
+    display: flex;
+    gap: 16px;
+}
+
+.community-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.community-link:hover {
+    color: var(--primary-light);
+    background: rgba(14, 165, 233, 0.1);
+}
+
+.community-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.community-notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.community-notice a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.community-notice a:hover {
+    text-decoration: underline;
+}
+
+.notice-tag {
+    font-size: 1rem;
+}
+
+/* ==================== AI学习助手 ==================== */
+.ai-assistant {
+    padding: 40px 0 20px;
+    background: var(--background);
+}
+
+.chat-container {
+    background: linear-gradient(135deg, rgba(30, 58, 95, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.chat-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.github-star {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.github-star:hover {
+    background: var(--surface-light);
+    color: var(--text-primary);
+    border-color: var(--primary);
+}
+
+.github-star svg {
+    width: 18px;
+    height: 18px;
+}
+
+.star-icon {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* 对话区域 */
+.chat-messages {
+    padding: 32px 24px;
+    min-height: 280px;
+}
+
+.message-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface);
+    border: 2px solid var(--primary);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.username {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ai-avatars {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface-light);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ai-avatar-fallback {
+    font-size: 1.5rem;
+}
+
+.ai-switch-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--surface);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.ai-switch-btn:hover {
+    background: var(--surface-light);
+    color: var(--primary-light);
+}
+
+.ai-switch-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 欢迎文字和示例 */
+.welcome-text {
+    margin-top: 16px;
+}
+
+.welcome-text p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+.example-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.example-chip {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.example-chip:hover {
+    background: rgba(14, 165, 233, 0.1);
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+/* 输入区域 */
+.chat-input-area {
+    padding: 16px 24px 24px;
+    border-top: 1px solid var(--border);
+}
+
+.input-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.tool-btn:hover {
+    background: var(--surface);
+    color: var(--text-primary);
+}
+
+.tool-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px 16px;
+}
+
+.chat-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    min-height: 24px;
+    max-height: 120px;
+    font-family: inherit;
+}
+
+.chat-input::placeholder {
+    color: var(--text-muted);
+}
+
+.voice-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.voice-btn:hover {
+    background: var(--surface-light);
+    color: var(--text-primary);
+}
+
+.voice-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.send-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.send-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* 版本公告 */
+.version-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+}
+
+.version-icon {
+    font-size: 1.5rem;
+}
+
+.version-text {
+    color: var(--text-primary);
+}
+
+.version-link {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.version-link:hover {
+    text-decoration: underline;
+}
+
+/* 课程标签 */
+.course-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+    padding: 0 24px;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn.active {
+    color: var(--primary-light);
+    border-bottom-color: var(--primary);
+}
+
+.tab-btn:hover:not(.active) {
+    color: var(--text-primary);
+}
+
+.tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--surface-light);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    margin-left: 6px;
+}
+
+/* ==================== 响应式调整 ==================== */
+@media (max-width: 768px) {
+    .community-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .chat-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .message-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .example-chips {
+        gap: 8px;
+    }
+    
+    .example-chip {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+    }
+    
+    .input-wrapper {
+        flex-wrap: wrap;
+    }
+    
+    .chat-input {
+        width: 100%;
+        order: -1;
+    }
+    
+    .course-tabs {
+        justify-content: center;
+    }
+    
+    .tab-btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+    
+    /* 消息气泡样式 */
+    .user-message,
+    .ai-message {
+        display: flex;
+        margin-bottom: 16px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .user-message {
+        justify-content: flex-end;
+    }
+
+    .ai-message {
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+
+    .message-bubble {
+        max-width: 80%;
+        padding: 12px 16px;
+        border-radius: 16px;
+        line-height: 1.6;
+    }
+
+    .user-bubble {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .ai-bubble {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-primary);
+        border-bottom-left-radius: 4px;
+    }
+
+    .message-bubble p {
+        margin: 0;
+    }
+}

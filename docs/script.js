@@ -446,4 +446,106 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
+    
+    // AI Assistant - Chat Input Auto-resize
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+        
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+    
+    // AI Assistant - Send Button
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendMessage);
+    }
+    
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
 });
+
+// Global function to fill input from example chips
+function fillInput(text) {
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+        chatInput.value = text;
+        chatInput.style.height = 'auto';
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+        chatInput.focus();
+    }
+}
+
+// Send message function
+function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    if (!chatInput || !chatMessages) return;
+    
+    const message = chatInput.value.trim();
+    if (!message) return;
+    
+    // Add user message
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.className = 'user-message';
+    userMsgDiv.innerHTML = `
+        <div class="message-bubble user-bubble">
+            <p>${escapeHtml(message)}</p>
+        </div>
+    `;
+    
+    // Insert before welcome text
+    const welcomeText = chatMessages.querySelector('.welcome-text');
+    if (welcomeText) {
+        welcomeText.style.display = 'none';
+    }
+    
+    chatMessages.appendChild(userMsgDiv);
+    
+    // Clear input
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Simulate AI response (placeholder)
+    setTimeout(() => {
+        const aiMsgDiv = document.createElement('div');
+        aiMsgDiv.className = 'ai-message';
+        aiMsgDiv.innerHTML = `
+            <div class="message-avatar">👨‍🏫</div>
+            <div class="message-bubble ai-bubble">
+                <p>正在思考中...</p>
+            </div>
+        `;
+        chatMessages.appendChild(aiMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Update response after a delay
+        setTimeout(() => {
+            aiMsgDiv.querySelector('p').textContent = '这是一个模拟回复。实际使用时，这里会连接AI后端生成解答过程。';
+        }, 1500);
+    }, 500);
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
