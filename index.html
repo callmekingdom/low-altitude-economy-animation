@@ -3,352 +3,2102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenMAIC - 多智能体互动课堂</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>青藜伴学 - AI智能学习助手</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --bg-dark: #0f0f23;
+            --bg-card: #1a1a2e;
+            --bg-input: #252542;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: #2d2d4a;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-2%, -2%) rotate(2deg); }
+        }
+
+        /* 浮动粒子 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* 头部 */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+        }
+
+        .header-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        .header-links a:hover {
+            color: var(--primary);
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 欢迎区域 */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .api-setup {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .api-setup h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .api-input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .api-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .api-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* 功能标签 */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover, .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .tab-icon {
+            font-size: 18px;
+        }
+
+        /* 输入区域 */
+        .input-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-header h3 {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 15px;
+            line-height: 1.8;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .input-area:focus {
+            border-color: var(--primary);
+        }
+
+        .input-area::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .input-options {
+            display: flex;
+            gap: 16px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .char-count {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 解析按钮 */
+        .analyze-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* 结果区域 */
+        .result-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-title h3 {
+            font-size: 20px;
+        }
+
+        .ai-badge {
+            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .result-content {
+            line-height: 2;
+            font-size: 15px;
+        }
+
+        .result-content h4 {
+            color: var(--primary);
+            margin: 24px 0 12px;
+            font-size: 16px;
+        }
+
+        .result-content p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .result-content strong {
+            color: var(--text-primary);
+        }
+
+        /* 代码块样式 */
+        .code-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+
+        /* 步骤卡片 */
+        .step-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: var(--text-secondary);
+        }
+
+        /* 知识点标签 */
+        .knowledge-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .knowledge-tag {
+            padding: 6px 14px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--primary);
+        }
+
+        /* 历史记录 */
+        .history-section {
+            margin-top: 40px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-header h3 {
+            font-size: 20px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .history-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .history-item-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 16px;
+        }
+
+        .history-item-time {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* 提示消息 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--success);
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .hero h2 {
+                font-size: 32px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .input-section, .result-section {
+                padding: 20px;
+            }
+        }
+
+        /* Markdown样式 */
+        .markdown-body {
+            color: var(--text-secondary);
+        }
+
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+            color: var(--text-primary);
+            margin: 24px 0 16px;
+        }
+
+        .markdown-body ul, .markdown-body ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .markdown-body li {
+            margin: 8px 0;
+        }
+
+        .markdown-body blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 16px;
+            margin: 16px 0;
+            color: var(--text-secondary);
+        }
+
+        .markdown-body pre {
+            background: var(--bg-dark);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .markdown-body code {
+            background: var(--bg-dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .markdown-body th, .markdown-body td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .markdown-body th {
+            background: var(--bg-input);
+        }
+
+        /* 视频教学样式 */
+        .video-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+        }
+
+        .video-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .video-header h4 {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .video-badge {
+            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .video-timeline {
+            display: grid;
+            gap: 12px;
+        }
+
+        .video-scene {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .video-scene:hover {
+            background: var(--border);
+            transform: translateX(4px);
+        }
+
+        .scene-time {
+            min-width: 80px;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .scene-content {
+            flex: 1;
+        }
+
+        .scene-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .scene-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .video-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .video-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .video-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .video-btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .video-btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* 详细解答样式优化 */
+        .result-content h1 {
+            font-size: 24px;
+            margin: 24px 0 16px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-content h2 {
+            font-size: 20px;
+            margin: 24px 0 12px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+        }
+
+        .result-content h3 {
+            font-size: 18px;
+            margin: 20px 0 12px;
+            color: var(--secondary);
+        }
+
+        .result-content h4 {
+            font-size: 16px;
+            margin: 16px 0 8px;
+            color: var(--accent);
+        }
+
+        .result-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: var(--bg-input);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .result-content th,
+        .result-content td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .result-content th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+        }
+
+        .result-content tr:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* LaTeX 公式样式 */
+        .math-inline {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--bg-input);
+            border-radius: 4px;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .math-block {
+            display: block;
+            padding: 16px;
+            margin: 16px 0;
+            background: var(--bg-input);
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            overflow-x: auto;
+        }
+
+        /* 步骤卡片增强 */
+        .step-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        /* 引用块样式 */
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            margin: 16px 0;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
+        /* 答案高亮 */
+        .answer-highlight {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--success);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .answer-highlight h3 {
+            color: var(--success);
+            margin-top: 0;
+        }
+
+        /* 视频播放器样式 */
+        .video-player-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 24px;
+        }
+
+        .video-stage {
+            position: relative;
+            background: #000;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-stage canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.6);
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-input);
+            border-top: 1px solid var(--border);
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .scene-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 16px;
+            background: var(--bg-dark);
+        }
+
+        .scene-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .scene-item:hover {
+            background: var(--bg-input);
+        }
+
+        .scene-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid var(--primary);
+        }
+
+        .scene-num {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .scene-title {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .scene-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* 结果标签页 */
+        .result-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .result-tab {
+            padding: 10px 20px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .result-tab:hover, .result-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <!-- 顶部导航栏 -->
-    <header class="header">
-        <div class="header-container">
-            <div class="logo">
-                <img src="assets/logo.svg" alt="OpenMAIC Logo" class="logo-img">
-                <span class="logo-text">青藜伴学</span>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">QL</div>
+            <div class="logo-text">
+                <h1>青藜伴学</h1>
+                <span>QINGLIBANXUE</span>
             </div>
-            <nav class="nav">
-                <a href="#courses" class="nav-link">课程</a>
-                <a href="#about" class="nav-link">关于</a>
-                <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="nav-link github-link">
-                    <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    GitHub
-                </a>
-            </nav>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+        </div>
+        <div class="header-links">
+            <a href="#" onclick="showToast('功能开发中...')">使用指南</a>
+            <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank">GitHub</a>
         </div>
     </header>
 
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#courses" class="mobile-nav-link">课程</a>
-        <a href="#about" class="mobile-nav-link">关于</a>
-        <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="mobile-nav-link">GitHub</a>
-    </div>
+    <div class="container">
+        <section class="hero">
+            <h2>🎓 AI智能学习助手</h2>
+            <p>基于 Kimi 大模型的智能题目解析系统，支持数学、物理、化学、编程等多学科题目分析</p>
+            
+            <div class="api-setup">
+                <h3>🎬 高清演示版 + 视频教学</h3>
+                <p style="color: var(--success); font-size: 14px;">
+                    🟢 服务状态: 高清解析服务器已就绪
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                    提供详细步骤推导、公式展示、视频教学脚本
+                </p>
+            </div>
+        </section>
 
-    <!-- 主视觉区 -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">Generative Learning in<br>Multi-Agent Interactive Classroom</h1>
-            <p class="hero-subtitle">基于多智能体的生成式互动课堂平台</p>
-            <p class="hero-greeting">嗨，同学 👋</p>
-            <div class="hero-cta">
-                <a href="#courses" class="btn btn-primary">开始学习</a>
-                <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank" class="btn btn-secondary">查看源码</a>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('solve')">
+                <span class="tab-icon">📝</span>
+                <span>题目解析</span>
+            </div>
+            <div class="tab" onclick="switchTab('explain')">
+                <span class="tab-icon">📚</span>
+                <span>知识讲解</span>
+            </div>
+            <div class="tab" onclick="switchTab('code')">
+                <span class="tab-icon">💻</span>
+                <span>代码分析</span>
+            </div>
+            <div class="tab" onclick="switchTab('check')">
+                <span class="tab-icon">✅</span>
+                <span>作业检查</span>
             </div>
         </div>
-        <div class="hero-visual">
-            <div class="floating-card card-1">
-                <span class="card-tag">AI</span>
-                <span class="card-text">智能辅导</span>
-            </div>
-            <div class="floating-card card-2">
-                <span class="card-tag">互动</span>
-                <span class="card-text">实时课堂</span>
-            </div>
-            <div class="floating-card card-3">
-                <span class="card-tag">生成式</span>
-                <span class="card-text">个性化学习</span>
-            </div>
-        </div>
-    </section>
 
-    <!-- 课程展示区 -->
-    <section class="courses" id="courses">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">精品课程</h2>
-                <p class="section-subtitle">探索多领域知识，开启智慧学习之旅</p>
+        <section class="input-section">
+            <div class="input-header">
+                <h3>
+                    <span id="modeIcon">📝</span>
+                    <span id="modeTitle">输入题目</span>
+                </h3>
+                <div class="input-actions">
+                    <button class="btn btn-secondary" onclick="clearInput()">清空</button>
+                    <button class="btn btn-secondary" onclick="pasteExample()">示例</button>
+                </div>
             </div>
             
-            <div class="course-grid">
-                <!-- 课程卡片 1 -->
-                <div class="course-card" data-course="openclaw">
-                    <div class="course-image">
-                        <div class="course-badge">编程</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">OpenClaw 介绍与部署</h3>
-                        <p class="course-desc">甲木老师带你入门 OpenClaw</p>
-                        <div class="course-meta">
-                            <span class="course-tag">趣味</span>
-                            <span class="course-duration">15 分钟</span>
-                        </div>
-                    </div>
-                </div>
+            <textarea 
+                class="input-area" 
+                id="questionInput" 
+                placeholder="请在此输入您想解析的题目...
 
-                <!-- 课程卡片 2 -->
-                <div class="course-card" data-course="tax">
-                    <div class="course-image">
-                        <div class="course-badge">财务</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">个人所得税汇算清缴</h3>
-                        <p class="course-desc">2026年个税汇算清缴实操指南</p>
-                        <div class="course-meta">
-                            <span class="course-tag">实用</span>
-                            <span class="course-duration">20 分钟</span>
-                        </div>
-                    </div>
-                </div>
+支持：
+• 数学公式（支持 LaTeX 格式）
+• 图片上传（点击或拖拽）
+• 多语言题目
 
-                <!-- 课程卡片 3 -->
-                <div class="course-card" data-course="flowers">
-                    <div class="course-image">
-                        <div class="course-badge">科学</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">花朵分类</h3>
-                        <p class="course-desc">用 AI 认识植物世界</p>
-                        <div class="course-meta">
-                            <span class="course-tag">科学</span>
-                            <span class="course-duration">12 分钟</span>
-                        </div>
-                    </div>
+示例：求函数 f(x) = x³ - 3x² + 4 的极值点和极值"
+            ></textarea>
+            
+            <div class="input-footer">
+                <div class="input-options">
+                    <label class="option">
+                        <input type="checkbox" id="showSteps" checked>
+                        <span>显示详细步骤</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" id="showKnowledge">
+                        <span>关联知识点</span>
+                    </label>
+                    <label class="option">
+                        <input type="checkbox" id="similarQuestions">
+                        <span>推荐类似题</span>
+                    </label>
                 </div>
-
-                <!-- 课程卡片 4 -->
-                <div class="course-card" data-course="fraction">
-                    <div class="course-image">
-                        <div class="course-badge">数学</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">分数的概念</h3>
-                        <p class="course-desc">三年级数学，含披萨模拟器</p>
-                        <div class="course-meta">
-                            <span class="course-tag">数学</span>
-                            <span class="course-duration">18 分钟</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 课程卡片 5 -->
-                <div class="course-card" data-course="taylor">
-                    <div class="course-image">
-                        <div class="course-badge">数学</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">泰勒公式讲解</h3>
-                        <p class="course-desc">期末复习必备</p>
-                        <div class="course-meta">
-                            <span class="course-tag">数学</span>
-                            <span class="course-duration">25 分钟</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 课程卡片 6 -->
-                <div class="course-card" data-course="rocket">
-                    <div class="course-image">
-                        <div class="course-badge">科学</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">牛顿第三定律与火箭方程</h3>
-                        <p class="course-desc">流浪地球情境教学</p>
-                        <div class="course-meta">
-                            <span class="course-tag">科学</span>
-                            <span class="course-duration">22 分钟</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 课程卡片 7 -->
-                <div class="course-card" data-course="avalon">
-                    <div class="course-image">
-                        <div class="course-badge">桌游</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">阿瓦隆桌游入门</h3>
-                        <p class="course-desc">快速上手经典桌游</p>
-                        <div class="course-meta">
-                            <span class="course-tag">趣味</span>
-                            <span class="course-duration">10 分钟</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 课程卡片 8 -->
-                <div class="course-card" data-course="ai-education">
-                    <div class="course-image">
-                        <div class="course-badge">前沿</div>
-                        <div class="course-overlay">
-                            <button class="play-btn">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <h3 class="course-title">AI 教育领域最新进展</h3>
-                        <p class="course-desc">前沿 AI 教育技术解读</p>
-                        <div class="course-meta">
-                            <span class="course-tag">科技</span>
-                            <span class="course-duration">30 分钟</span>
-                        </div>
-                    </div>
-                </div>
+                <span class="char-count"><span id="charCount">0</span> / 4000</span>
             </div>
-        </div>
-    </section>
-
-    <!-- 视频播放器模态框 -->
-    <div class="video-modal" id="videoModal">
-        <div class="video-modal-content">
-            <button class="video-close" id="videoClose">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
+            
+            <button class="btn btn-primary analyze-btn" onclick="analyzeQuestion()">
+                <span id="btnText">🚀 开始解析</span>
             </button>
-            <div class="video-container">
-                <video id="mainVideo" class="video-player">
-                    <source src="" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
-                <div class="video-controls">
-                    <button class="control-btn play-pause" id="playPauseBtn">
-                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                        </svg>
-                    </button>
-                    <div class="progress-container" id="progressContainer">
-                        <div class="progress-bar" id="progressBar">
-                            <div class="progress-fill" id="progressFill"></div>
-                            <div class="progress-handle" id="progressHandle"></div>
-                        </div>
-                    </div>
-                    <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
-                    <button class="control-btn fullscreen" id="fullscreenBtn">
-                        <svg class="fullscreen-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                        </svg>
-                        <svg class="exit-fullscreen-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                        </svg>
-                    </button>
+        </section>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>AI 正在思考中，请稍候...</p>
+        </div>
+
+        <section class="result-section" id="resultSection">
+            <div class="result-header">
+                <div class="result-title">
+                    <h3>📊 解析结果</h3>
+                    <span class="ai-badge">Kimi AI</span>
+                </div>
+                <div class="result-actions">
+                    <button class="btn btn-secondary" onclick="copyResult()">📋 复制</button>
+                    <button class="btn btn-secondary" onclick="saveResult()">💾 保存</button>
                 </div>
             </div>
-        </div>
+            
+            <div id="knowledgeTags" class="knowledge-tags" style="display: none;">
+                <!-- 动态生成知识点标签 -->
+            </div>
+            
+            <!-- 标签页切换 -->
+            <div class="result-tabs">
+                <div class="result-tab active" onclick="switchResultTab('text')" id="tab-text">
+                    📝 文字解析
+                </div>
+                <div class="result-tab" onclick="switchResultTab('video')" id="tab-video">
+                    🎬 视频教学
+                </div>
+            </div>
+            
+            <!-- 文字解析内容 -->
+            <div class="tab-content active" id="content-text">
+                <div class="result-content markdown-body" id="resultContent">
+                    <!-- 解析结果将显示在这里 -->
+                </div>
+            </div>
+            
+            <!-- 视频教学内容 -->
+            <div class="tab-content" id="content-video">
+                <div id="videoPlayerContainer">
+                    <!-- 视频播放器将在这里创建 -->
+                </div>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <div class="history-header">
+                <h3>📜 历史记录</h3>
+                <button class="btn btn-secondary" onclick="clearHistory()">清空历史</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <!-- 历史记录动态生成 -->
+            </div>
+        </section>
     </div>
 
-    <!-- 关于区域 -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <h2 class="section-title">关于 OpenMAIC</h2>
-                <p class="about-text">
-                    OpenMAIC (Open Multi-Agent Interactive Classroom) 是一个开源的多智能体互动课堂平台。
-                    我们利用先进的生成式 AI 技术，打造个性化、互动式的学习体验，让每个学生都能获得专属的智能辅导。
-                </p>
-                <div class="about-features">
-                    <div class="feature">
-                        <div class="feature-icon">🤖</div>
-                        <h4>多智能体协作</h4>
-                        <p>多个 AI 智能体协同工作，提供全方位学习支持</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">🎯</div>
-                        <h4>个性化学习</h4>
-                        <p>根据学习进度和风格，生成定制化教学内容</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">💬</div>
-                        <h4>实时互动</h4>
-                        <p>与 AI 导师实时对话，即时解答疑惑</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="assets/logo.svg" alt="OpenMAIC" class="footer-logo">
-                    <span>青藜伴学 - 多智能体互动课堂</span>
-                </div>
-                <div class="footer-links">
-                    <a href="https://github.com/THU-MAIC/OpenMAIC" target="_blank">GitHub</a>
-                    <a href="#courses">课程</a>
-                    <a href="#about">关于</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2026 OpenMAIC. All rights reserved.</p>
-            </div>
-        </div>
+    <footer>
+        <p>Powered by <a href="https://platform.moonshot.cn/" target="_blank">Kimi (Moonshot AI)</a> | 青藜伴学 - 让学习更智能</p>
     </footer>
 
-    <script src="script.js"></script>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ==================== 配置 ====================
+        const CONFIG = {
+            API_BASE_URL: 'https://api.moonshot.cn/v1',
+            PROXY_URL: 'http://localhost:8080/proxy/chat',
+            MODEL: 'moonshot-v1-8k',
+            MAX_TOKENS: 4000,
+            TEMPERATURE: 0.7,
+            USE_PROXY: false  // 是否使用本地代理
+        };
+
+        // 可用模型列表
+        const MODELS = {
+            'moonshot-v1-8k': { name: 'Kimi 8K', desc: '标准版，适合一般题目' },
+            'moonshot-v1-32k': { name: 'Kimi 32K', desc: '长文本，适合复杂题目' },
+            'moonshot-v1-128k': { name: 'Kimi 128K', desc: '超长文本，适合长篇解析' }
+        };
+
+        // ==================== 状态管理 ====================
+        let currentMode = 'solve';
+        let apiKey = localStorage.getItem('kimi_api_key') || '';
+        let history = JSON.parse(localStorage.getItem('question_history') || '[]');
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            // 自动启用代理模式（API Key 已内置在代理服务器中）
+            CONFIG.USE_PROXY = true;
+            localStorage.setItem('kimi_use_proxy', 'true');
+            
+            // 恢复模型选择
+            const savedModel = localStorage.getItem('kimi_model');
+            if (savedModel) {
+                CONFIG.MODEL = savedModel;
+            }
+
+            // 创建粒子效果
+            createParticles();
+
+            // 绑定事件
+            document.getElementById('questionInput').addEventListener('input', updateCharCount);
+
+            // 加载历史记录
+            renderHistory();
+            
+            console.log('🚀 青藜伴学已初始化（代理模式）');
+            console.log('📊 配置:', { model: CONFIG.MODEL, useProxy: true });
+            
+            // 自动测试代理连接
+            setTimeout(() => {
+                testProxyConnection();
+            }, 500);
+        });
+
+        // ==================== 测试代理连接 ====================
+        async function testProxyConnection() {
+            try {
+                const response = await fetch('http://localhost:8080/proxy/test');
+                const data = await response.json();
+                if (data.status === 'ok') {
+                    console.log('✅ 代理服务器连接成功');
+                } else {
+                    console.log('⚠️ 代理连接异常:', data);
+                    showToast('代理服务器可能需要启动，请运行: node proxy.js', 'error');
+                }
+            } catch (err) {
+                console.log('❌ 无法连接到代理服务器:', err.message);
+                showToast('请先启动代理服务器: node proxy.js', 'error');
+            }
+        }
+
+        // ==================== 粒子效果 ====================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // ==================== 启用代理模式 ====================
+        function enableProxyMode() {
+            CONFIG.USE_PROXY = true;
+            localStorage.setItem('kimi_use_proxy', 'true');
+            document.getElementById('apiStatus').innerHTML = '✅ 已切换到代理模式，API Key 由后端处理';
+            document.getElementById('apiStatus').style.color = 'var(--success)';
+            showToast('已启用代理模式');
+            
+            // 测试代理连接
+            fetch(`${CONFIG.PROXY_URL.replace('/chat', '/test')}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        showToast('代理连接成功！');
+                    } else {
+                        showToast('代理连接失败，请检查代理服务器是否启动', 'error');
+                    }
+                })
+                .catch(err => {
+                    showToast('无法连接到代理服务器，请先运行 node proxy.js', 'error');
+                });
+        }
+
+        // ==================== 启动演示服务器提示 ====================
+        function startDemoServer() {
+            showToast('请在终端运行: node proxy-demo.js');
+            alert('启动步骤:\n\n1. 打开终端\n2. 进入目录: cd C:\\Users\\锦鹏\\.openclaw\\workspace\n3. 运行: node proxy-demo.js\n4. 访问: http://localhost:8080');
+        }
+        function saveApiKey() {
+            const key = document.getElementById('apiKey').value.trim();
+            const model = document.getElementById('modelSelect').value;
+            
+            if (!key) {
+                showToast('请输入 API Key', 'error');
+                return;
+            }
+            if (!key.startsWith('sk-')) {
+                showToast('API Key 格式不正确，应以 sk- 开头', 'error');
+                return;
+            }
+            
+            apiKey = key;
+            CONFIG.MODEL = model;
+            
+            localStorage.setItem('kimi_api_key', apiKey);
+            localStorage.setItem('kimi_model', model);
+            
+            console.log('✅ API Key 已保存，长度:', apiKey.length, '位');
+            console.log('✅ 选择模型:', model);
+            showToast('设置已保存');
+        }
+
+        // ==================== 测试 API 连接 ====================
+        async function testApiConnection() {
+            const key = document.getElementById('apiKey').value.trim();
+            const model = document.getElementById('modelSelect').value;
+            const statusDiv = document.getElementById('apiStatus');
+            
+            if (!key) {
+                showToast('请先输入 API Key', 'error');
+                return;
+            }
+
+            // 详细调试信息
+            console.log('========== API 测试调试信息 ==========');
+            console.log('输入的 Key 长度:', key.length);
+            console.log('Key 前缀:', key.substring(0, 10) + '...');
+            console.log('Key 后缀:', '...' + key.substring(key.length - 5));
+            console.log('Key 是否以 sk- 开头:', key.startsWith('sk-'));
+            console.log('选择的模型:', model);
+            console.log('请求 URL:', `${CONFIG.API_BASE_URL}/chat/completions`);
+            console.log('======================================');
+
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 正在测试连接...';
+            statusDiv.style.color = 'var(--text-secondary)';
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${key}`
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: [
+                            { role: 'user', content: '你好，这是一个测试' }
+                        ],
+                        max_tokens: 10
+                    })
+                });
+
+                console.log('响应状态:', response.status);
+                console.log('响应状态文本:', response.statusText);
+
+                if (response.ok) {
+                    statusDiv.innerHTML = '✅ 连接成功！API Key 有效';
+                    statusDiv.style.color = 'var(--success)';
+                    showToast('API 连接测试成功');
+                } else {
+                    const error = await response.json().catch(() => ({}));
+                    console.log('错误详情:', error);
+                    
+                    let errorMsg = error.error?.message || `HTTP ${response.status}`;
+                    let suggestion = '';
+                    
+                    // 常见错误提示
+                    if (response.status === 401) {
+                        errorMsg = 'API Key 无效或已过期';
+                        suggestion = `
+<br><br><strong>排查建议：</strong>
+<br>1. 确认复制的 Key 完整（以 sk- 开头，约40+字符）
+<br>2. Key 创建后请<strong>立即使用</strong>，不要关闭页面后再复制
+<br>3. 检查是否有多余空格
+<br>4. 账户是否完成实名认证（https://platform.moonshot.cn/）
+<br>5. 尝试在终端用 curl 测试（见下方）`;
+                    } else if (response.status === 429) {
+                        errorMsg = '请求过于频繁，请稍后再试';
+                    } else if (response.status === 402) {
+                        errorMsg = '账户余额不足，请充值';
+                    }
+                    
+                    statusDiv.innerHTML = `❌ 连接失败: ${errorMsg}${suggestion}`;
+                    statusDiv.style.color = '#ef4444';
+                    showToast('API 连接测试失败: ' + errorMsg, 'error');
+                    
+                    // 显示备用方案
+                    document.getElementById('fallbackSection').style.display = 'block';
+                }
+            } catch (error) {
+                console.log('网络错误:', error);
+                statusDiv.innerHTML = `❌ 网络错误: ${error.message}<br>请检查网络连接或尝试使用代理`;
+                statusDiv.style.color = '#ef4444';
+                showToast('网络错误: ' + error.message, 'error');
+            }
+        }
+
+        // ==================== 模式切换 ====================
+        function switchTab(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const modes = {
+                solve: { icon: '📝', title: '输入题目', placeholder: '请在此输入您想解析的题目...\n\n支持：\n• 数学公式（支持 LaTeX 格式）\n• 图片上传（点击或拖拽）\n• 多语言题目\n\n示例：求函数 f(x) = x³ - 3x² + 4 的极值点和极值' },
+                explain: { icon: '📚', title: '输入知识点', placeholder: '请输入您想了解的知识点...\n\n示例：请详细讲解微积分中的链式法则，包括定义、应用和典型例题' },
+                code: { icon: '💻', title: '输入代码', placeholder: '请粘贴您想分析的代码...\n\n支持多种编程语言，我将为您分析代码逻辑、找出潜在问题并提供优化建议' },
+                check: { icon: '✅', title: '输入答案', placeholder: '请粘贴题目和您的答案...\n\n我将帮您检查答案的正确性，指出错误并给出正确解答' }
+            };
+
+            const m = modes[mode];
+            document.getElementById('modeIcon').textContent = m.icon;
+            document.getElementById('modeTitle').textContent = m.title;
+            document.getElementById('questionInput').placeholder = m.placeholder;
+        }
+
+        // ==================== 字符计数 ====================
+        function updateCharCount() {
+            const count = document.getElementById('questionInput').value.length;
+            document.getElementById('charCount').textContent = count;
+        }
+
+        // ==================== 清空输入 ====================
+        function clearInput() {
+            document.getElementById('questionInput').value = '';
+            updateCharCount();
+        }
+
+        // ==================== 示例 ====================
+        function pasteExample() {
+            const examples = {
+                solve: '已知函数 f(x) = x³ - 6x² + 9x + 1，求：\n1. 函数的单调递增和递减区间\n2. 函数的极值点和极值\n3. 函数在区间 [0, 4] 上的最大值和最小值',
+                explain: '请详细讲解高中物理中的动量守恒定律，包括：\n1. 定律的内容和适用条件\n2. 与能量守恒的区别和联系\n3. 三个典型应用场景',
+                code: 'def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\n# 请分析这段代码的时间复杂度，并给出优化方案',
+                check: '题目：解方程 2x² - 5x + 2 = 0\n\n我的答案：x = 2 或 x = 0.5\n\n请检查我的答案是否正确。'
+            };
+            document.getElementById('questionInput').value = examples[currentMode];
+            updateCharCount();
+        }
+
+        // ==================== 核心：题目解析 ====================
+        async function analyzeQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            
+            if (!question) {
+                showToast('请输入题目内容', 'error');
+                return;
+            }
+
+            // 调试：检查代理模式
+            console.log('🔍 当前配置:');
+            console.log('  - 使用代理:', CONFIG.USE_PROXY);
+            console.log('  - 代理地址:', CONFIG.PROXY_URL);
+            
+            // 检查代理是否可用
+            if (!navigator.onLine) {
+                showToast('网络连接不可用', 'error');
+                return;
+            }
+
+            // 显示加载状态
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('resultSection').classList.remove('show');
+            document.getElementById('btnText').textContent = '解析中...';
+
+            try {
+                const prompt = buildPrompt(question);
+                console.log('📤 正在发送请求:');
+                console.log('  - 模型:', CONFIG.MODEL);
+                console.log('  - 代理地址:', CONFIG.PROXY_URL);
+                
+                const response = await fetch(CONFIG.PROXY_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: CONFIG.MODEL,
+                        messages: [
+                            { role: 'system', content: prompt.system },
+                            { role: 'user', content: prompt.user }
+                        ],
+                        temperature: CONFIG.TEMPERATURE,
+                        max_tokens: CONFIG.MAX_TOKENS
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({}));
+                    throw new Error(error.error?.message || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const result = data.choices[0].message.content;
+                const videoScript = data.choices[0].message.videoScript;
+                
+                // 显示结果（包含视频脚本）
+                displayResult(result, question, videoScript);
+                
+                // 保存到历史
+                addToHistory(question, result);
+                
+                showToast('解析完成');
+            } catch (error) {
+                console.error('❌ 解析错误:', error);
+                showToast('解析失败: ' + error.message, 'error');
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('btnText').textContent = '🚀 开始解析';
+            }
+        }
+
+        // ==================== 构建 Prompt ====================
+        function buildPrompt(question) {
+            const showSteps = document.getElementById('showSteps').checked;
+            const showKnowledge = document.getElementById('showKnowledge').checked;
+            const similarQuestions = document.getElementById('similarQuestions').checked;
+
+            let systemPrompt = '你是一位专业的AI学习助手，擅长解析各类学科题目。';
+            
+            const modePrompts = {
+                solve: `请对以下题目进行详细解析：
+
+要求：
+${showSteps ? '1. 给出详细的解题步骤，每一步都要说明理由\n' : ''}
+2. 给出最终答案
+${showKnowledge ? '3. 列出本题涉及的核心知识点\n' : ''}
+${similarQuestions ? '4. 推荐2-3道类似的练习题\n' : ''}
+
+请用中文回答，格式清晰，便于学生理解。`,
+                
+                explain: `请对以下知识点进行详细讲解：
+
+要求：
+1. 从基础概念开始讲解
+2. 提供直观的理解方式
+3. 给出典型例题
+4. 总结常见误区
+
+请用中文回答，深入浅出，适合学生学习。`,
+                
+                code: `请分析以下代码：
+
+要求：
+1. 分析代码的功能和逻辑
+2. 指出潜在的问题或bug
+3. 分析时间/空间复杂度
+4. 提供优化建议和改进后的代码
+
+请用中文回答，代码块使用markdown格式。`,
+                
+                check: `请检查以下答案的正确性：
+
+要求：
+1. 判断答案是否正确
+2. 如有错误，指出错误原因
+3. 给出正确解答和详细步骤
+4. 总结易错点
+
+请用中文回答，友善鼓励的语气。`
+            };
+
+            return {
+                system: systemPrompt,
+                user: modePrompts[currentMode] + '\n\n=== 题目/内容 ===\n' + question
+            };
+        }
+
+        // ==================== 显示结果 ====================
+        function displayResult(content, originalQuestion, videoScript) {
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+            
+            // 渲染详细解答
+            let html = markdownToHtml(content);
+            resultContent.innerHTML = html;
+            
+            // 如果有视频脚本，创建视频播放器
+            if (videoScript) {
+                createVideoPlayer(videoScript);
+            }
+            
+            resultSection.classList.add('show');
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ==================== Markdown 转 HTML ====================
+        function markdownToHtml(markdown) {
+            return markdown
+                // 代码块
+                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<div class="code-block"><code>$2</code></div>')
+                // 行内代码
+                .replace(/`([^`]+)`/g, '<code style="background: var(--bg-dark); padding: 2px 6px; border-radius: 4px;">$1</code>')
+                // 标题
+                .replace(/^### (.*$)/gim, '<h4>$1</h4>')
+                .replace(/^## (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^# (.*$)/gim, '<h2>$1</h2>')
+                // 粗体
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // 斜体
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // 列表
+                .replace(/^\s*[-*]\s+(.*$)/gim, '<li>$1</li>')
+                // 数字列表
+                .replace(/^\s*\d+\.\s+(.*$)/gim, '<li>$1</li>')
+                // 引用
+                .replace(/^>\s+(.*$)/gim, '<blockquote>$1</blockquote>')
+                // 换行
+                .replace(/\n/g, '<br>');
+        }
+
+        // ==================== 提取知识点标签 ====================
+        function extractKnowledgeTags(content) {
+            const tagsDiv = document.getElementById('knowledgeTags');
+            // 简单的关键词提取逻辑
+            const keywords = ['导数', '积分', '极限', '向量', '矩阵', '概率', '统计', 
+                           '力学', '电磁学', '热学', '光学', '量子',
+                           '递归', '动态规划', '排序', '查找', '数据结构'];
+            
+            const found = keywords.filter(kw => content.includes(kw));
+            
+            if (found.length > 0) {
+                tagsDiv.innerHTML = found.map(tag => `<span class="knowledge-tag">${tag}</span>`).join('');
+                tagsDiv.style.display = 'flex';
+            }
+        }
+
+        // ==================== 历史记录管理 ====================
+        function addToHistory(question, result) {
+            const item = {
+                question: question.substring(0, 50) + (question.length > 50 ? '...' : ''),
+                fullQuestion: question,
+                result: result,
+                time: new Date().toLocaleString('zh-CN'),
+                timestamp: Date.now()
+            };
+            
+            history.unshift(item);
+            if (history.length > 10) history = history.slice(0, 10);
+            
+            localStorage.setItem('question_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">暂无历史记录</p>';
+                return;
+            }
+            
+            list.innerHTML = history.map((item, index) => `
+                <div class="history-item" onclick="loadHistory(${index})">
+                    <span class="history-item-text">${item.question}</span>
+                    <span class="history-item-time">${item.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function loadHistory(index) {
+            const item = history[index];
+            document.getElementById('questionInput').value = item.fullQuestion;
+            updateCharCount();
+            displayResult(item.result, item.fullQuestion);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function clearHistory() {
+            history = [];
+            localStorage.removeItem('question_history');
+            renderHistory();
+            showToast('历史记录已清空');
+        }
+
+        // ==================== 结果操作 ====================
+        function copyResult() {
+            const content = document.getElementById('resultContent').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                showToast('已复制到剪贴板');
+            });
+        }
+
+        function saveResult() {
+            const content = document.getElementById('resultContent').innerText;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `解析结果_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('已保存到下载文件夹');
+        }
+
+        // ==================== 提示消息 ====================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==================== 结果标签页切换 ====================
+        function switchResultTab(tab) {
+            // 更新标签按钮状态
+            document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // 更新内容显示
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`content-${tab}`).classList.add('active');
+        }
+
+        // ==================== 全局视频播放器实例 ====================
+        let videoPlayer = null;
+
+        // ==================== 创建视频播放器 ====================
+        function createVideoPlayer(videoScript) {
+            const container = document.getElementById('videoPlayerContainer');
+            container.innerHTML = ''; // 清空
+            
+            // 创建播放器 HTML
+            container.innerHTML = `
+                <div class="video-player-container">
+                    <div class="video-stage">
+                        <canvas id="lessonCanvas" width="800" height="450"></canvas>
+                        <div class="video-overlay" id="videoOverlay">
+                            <div class="play-button" id="playBtn">▶️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-controls">
+                        <button class="control-btn" id="prevBtn" title="上一个">⏮️</button>
+                        <button class="control-btn" id="playPauseBtn" title="播放/暂停">▶️</button>
+                        <button class="control-btn" id="nextBtn" title="下一个">⏭️</button>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                        <button class="control-btn" id="muteBtn" title="静音">🔊</button>
+                    </div>
+                    
+                    <div class="scene-list" id="sceneList">
+                        <!-- 场景列表 -->
+                    </div>
+                </div>
+            `;
+            
+            // 转换为播放器需要的格式
+            const scenes = videoScript.scenes.map((scene, i) => ({
+                title: `场景 ${i + 1}`,
+                content: scene.content,
+                duration: 30, // 每个场景默认30秒
+                narration: scene.content
+            }));
+            
+            // 初始化播放器
+            initCustomPlayer(scenes);
+        }
+
+        // ==================== 初始化自定义播放器 ====================
+        function initCustomPlayer(scenes) {
+            let currentScene = 0;
+            let isPlaying = false;
+            let speechUtterance = null;
+            
+            const canvas = document.getElementById('lessonCanvas');
+            const ctx = canvas.getContext('2d');
+            const playOverlay = document.getElementById('videoOverlay');
+            const playBtn = document.getElementById('playBtn');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const muteBtn = document.getElementById('muteBtn');
+            const sceneList = document.getElementById('sceneList');
+            
+            // 生成场景列表
+            sceneList.innerHTML = scenes.map((scene, i) => `
+                <div class="scene-item ${i === 0 ? 'active' : ''}" data-index="${i}">
+                    <span class="scene-num">${i + 1}</span>
+                    <span class="scene-title">${scene.title}</span>
+                    <span class="scene-time">${scene.duration}s</span>
+                </div>
+            `).join('');
+            
+            // 绘制场景
+            function drawScene(index) {
+                const scene = scenes[index];
+                const w = canvas.width;
+                const h = canvas.height;
+                
+                // 背景
+                ctx.fillStyle = '#0f0f23';
+                ctx.fillRect(0, 0, w, h);
+                
+                // 渐变
+                const gradient = ctx.createLinearGradient(0, 0, w, h);
+                gradient.addColorStop(0, '#1a1a2e');
+                gradient.addColorStop(1, '#252542');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, w, h);
+                
+                // 网格
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.1)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < w; i += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, h);
+                    ctx.stroke();
+                }
+                for (let i = 0; i < h; i += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(w, i);
+                    ctx.stroke();
+                }
+                
+                // 标题
+                ctx.fillStyle = '#6366f1';
+                ctx.font = 'bold 28px "Noto Sans SC", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(scene.title, w / 2, 60);
+                
+                // 内容
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '18px "Noto Sans SC", sans-serif';
+                ctx.textAlign = 'left';
+                
+                const lines = wrapText(ctx, scene.content, w - 100, 24);
+                let y = 120;
+                lines.forEach(line => {
+                    ctx.fillText(line, 50, y);
+                    y += 36;
+                });
+                
+                // 进度点
+                const dotY = h - 30;
+                const dotSpacing = 30;
+                const startX = (w - (scenes.length - 1) * dotSpacing) / 2;
+                
+                scenes.forEach((_, i) => {
+                    ctx.beginPath();
+                    ctx.arc(startX + i * dotSpacing, dotY, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = i === index ? '#6366f1' : 'rgba(255, 255, 255, 0.3)';
+                    ctx.fill();
+                });
+                
+                // 更新列表
+                document.querySelectorAll('.scene-item').forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+                
+                // 更新进度条
+                const progress = ((index + 1) / scenes.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+            
+            // 文字换行
+            function wrapText(ctx, text, maxWidth, lineHeight) {
+                const chars = text.split('');
+                const lines = [];
+                let currentLine = '';
+                
+                for (let char of chars) {
+                    const testLine = currentLine + char;
+                    const metrics = ctx.measureText(testLine);
+                    
+                    if (metrics.width > maxWidth && currentLine !== '') {
+                        lines.push(currentLine);
+                        currentLine = char;
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+            
+            // 播放语音
+            function playSpeech(index) {
+                if (!('speechSynthesis' in window)) return;
+                
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(scenes[index].narration);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                
+                utterance.onend = () => {
+                    if (isPlaying && currentScene < scenes.length - 1) {
+                        setTimeout(() => nextScene(), 500);
+                    } else if (currentScene >= scenes.length - 1) {
+                        pause();
+                    }
+                };
+                
+                window.speechSynthesis.speak(utterance);
+                speechUtterance = utterance;
+            }
+            
+            // 播放
+            function play() {
+                isPlaying = true;
+                playOverlay.style.display = 'none';
+                playPauseBtn.textContent = '⏸️';
+                playSpeech(currentScene);
+            }
+            
+            // 暂停
+            function pause() {
+                isPlaying = false;
+                playPauseBtn.textContent = '▶️';
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
+            
+            // 下一个场景
+            function nextScene() {
+                if (currentScene < scenes.length - 1) {
+                    currentScene++;
+                    drawScene(currentScene);
+                    if (isPlaying) playSpeech(currentScene);
+                }
+            }
+            
+            // 上一个场景
+            function prevScene() {
+                if (currentScene > 0) {
+                    currentScene--;
+                    drawScene(currentScene);
+                    if (isPlaying) playSpeech(currentScene);
+                }
+            }
+            
+            // 跳转场景
+            function jumpToScene(index) {
+                window.speechSynthesis.cancel();
+                currentScene = index;
+                drawScene(index);
+                if (isPlaying) playSpeech(index);
+            }
+            
+            // 绑定事件
+            playBtn.addEventListener('click', play);
+            playPauseBtn.addEventListener('click', () => isPlaying ? pause() : play());
+            prevBtn.addEventListener('click', prevScene);
+            nextBtn.addEventListener('click', nextScene);
+            
+            document.querySelectorAll('.scene-item').forEach((item, i) => {
+                item.addEventListener('click', () => jumpToScene(i));
+            });
+            
+            document.getElementById('progressBar').addEventListener('click', (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                jumpToScene(Math.floor(percent * scenes.length));
+            });
+            
+            muteBtn.addEventListener('click', () => {
+                if ('speechSynthesis' in window) {
+                    if (window.speechSynthesis.speaking) {
+                        window.speechSynthesis.cancel();
+                        muteBtn.textContent = '🔇';
+                    } else {
+                        muteBtn.textContent = '🔊';
+                        if (isPlaying) playSpeech(currentScene);
+                    }
+                }
+            });
+            
+            // 初始绘制
+            drawScene(0);
+        }
+    </script>
 </body>
 </html>
